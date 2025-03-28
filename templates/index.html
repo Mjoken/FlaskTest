@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Последние рецепты</h1>
+    {% if recipes %}
+        <div class="recipe-list">
+            {% for recipe in recipes %}
+                <div class="recipe-card">
+                    <h3>{{ recipe.title }}</h3>
+                    <p><strong>Ингредиенты:</strong></p>
+                    <pre>{{ recipe.ingredients }}</pre>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Пока нет рецептов. Станьте первым!</p>
+    {% endif %}
+{% endblock %}

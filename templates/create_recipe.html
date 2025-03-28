@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="form-container">
+        <form method="POST" enctype="multipart/form-data">
+            <h1>Создать новый рецепт</h1>
+
+            <!-- Существующие поля -->
+            <label for="title">Название рецепта:</label>
+            <input type="text" id="title" name="title" required>
+
+            <label for="ingredients">Ингредиенты:</label>
+            <textarea id="ingredients" name="ingredients" rows="5" required></textarea>
+
+            <label for="instructions">Инструкция приготовления:</label>
+            <textarea id="instructions" name="instructions" rows="8" required></textarea>
+
+            <!-- Новое поле для изображения -->
+            <label for="image">Изображение блюда (необязательно):</label>
+            <input type="file" id="image" name="image" accept="image/*">
+
+            <button type="submit">Опубликовать рецепт</button>
+        </form>
+    </div>
+{% endblock %}

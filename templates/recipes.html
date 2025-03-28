@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="content">
+        <h1 class="page-title">Все рецепты</h1>
+
+        {% if recipes %}
+            <div class="recipe-list">
+                {% for recipe in recipes %}
+                    <div class="recipe-card" id="recipe-{{ recipe.id }}">
+                        {% if recipe.image %}
+                            <div class="recipe-image">
+                                <img src="{{ url_for('static', filename='uploads/' + recipe.image) }}"
+                                     alt="{{ recipe.title }}"
+                                     loading="lazy">
+                            </div>
+                        {% endif %}
+
+                        <div class="recipe-content">
+                            <h3>{{ recipe.title }}</h3>
+
+                            <div class="recipe-meta">
+                                <span class="author">
+                                    <svg class="icon" viewBox="0 0 24 24" width="16" height="16">
+                                        <path fill="currentColor" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
+                                    </svg>
+                                    {{ User.query.get(recipe.user_id).username }}
+                                </span>
+                            </div>
+
+                            <div class="recipe-details">
+                                <div class="ingredients">
+                                    <h4>Ингредиенты:</h4>
+                                    <pre>{{ recipe.ingredients }}</pre>
+                                </div>
+
+                                <a href="{{ url_for('recipes') }}#recipe-{{ recipe.id }}"
+                                   class="btn recipe-btn">
+                                    Подробнее
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p class="empty-text">Пока нет ни одного рецепта. Будьте первым!</p>
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('create_recipe') }}" class="btn">
+                        Создать рецепт
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

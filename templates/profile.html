@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Профиль {{ user.username }}</h1>
+    <p>Email: {{ user.email }}</p>
+
+    <h2>Мои рецепты</h2>
+    {% if recipes %}
+        <div class="recipe-list">
+            {% for recipe in recipes %}
+                <div class="recipe-card">
+                    <h3>{{ recipe.title }}</h3>
+                    <pre>{{ recipe.ingredients }}</pre>
+                    <a href="{{ url_for('recipes') }}#recipe-{{ recipe.id }}">Подробнее</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>У вас пока нет рецептов. <a href="{{ url_for('create_recipe') }}">Создать первый</a></p>
+    {% endif %}
+{% endblock %}
