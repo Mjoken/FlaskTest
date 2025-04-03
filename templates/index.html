@@ -1,18 +1,36 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Последние рецепты</h1>
+    <h1 class="page-title">Последние рецепты</h1>
     {% if recipes %}
         <div class="recipe-list">
             {% for recipe in recipes %}
                 <div class="recipe-card">
-                    <h3>{{ recipe.title }}</h3>
-                    <p><strong>Ингредиенты:</strong></p>
-                    <pre>{{ recipe.ingredients }}</pre>
+                    {% if recipe.image %}
+                        <div class="recipe-image">
+                            <img src="{{ url_for('static', filename='uploads/' + recipe.image) }}"
+                                 alt="{{ recipe.title }}"
+                                 loading="lazy">
+                        </div>
+                    {% endif %}
+                    <div class="recipe-content">
+                        <h3>{{ recipe.title }}</h3>
+                        <div class="recipe-meta">
+                            <span class="author">
+                                Автор: {{ User.query.get(recipe.user_id).username }}
+                            </span>
+                        </div>
+                        <a href="{{ url_for('recipes') }}#recipe-{{ recipe.id }}"
+                           class="btn">
+                            Подробнее
+                        </a>
+                    </div>
                 </div>
             {% endfor %}
         </div>
     {% else %}
-        <p>Пока нет рецептов. Станьте первым!</p>
+        <div class="empty-state">
+            <p class="empty-text">Пока нет рецептов. Станьте первым!</p>
+        </div>
     {% endif %}
 {% endblock %}

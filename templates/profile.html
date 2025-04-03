@@ -1,21 +1,40 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Профиль {{ user.username }}</h1>
-    <p>Email: {{ user.email }}</p>
+    <h1 class="page-title">Профиль {{ user.username }}</h1>
+
+    <div class="profile-info">
+        <p>Email: {{ user.email }}</p>
+    </div>
 
     <h2>Мои рецепты</h2>
     {% if recipes %}
         <div class="recipe-list">
             {% for recipe in recipes %}
                 <div class="recipe-card">
-                    <h3>{{ recipe.title }}</h3>
-                    <pre>{{ recipe.ingredients }}</pre>
-                    <a href="{{ url_for('recipes') }}#recipe-{{ recipe.id }}">Подробнее</a>
+                    {% if recipe.image %}
+                        <div class="recipe-image">
+                            <img src="{{ url_for('static', filename='uploads/' + recipe.image) }}"
+                                 alt="{{ recipe.title }}"
+                                 loading="lazy">
+                        </div>
+                    {% endif %}
+                    <div class="recipe-content">
+                        <h3>{{ recipe.title }}</h3>
+                        <a href="{{ url_for('recipes') }}#recipe-{{ recipe.id }}"
+                           class="btn">
+                            Подробнее
+                        </a>
+                    </div>
                 </div>
             {% endfor %}
         </div>
     {% else %}
-        <p>У вас пока нет рецептов. <a href="{{ url_for('create_recipe') }}">Создать первый</a></p>
+        <div class="empty-state">
+            <p class="empty-text">У вас пока нет рецептов.</p>
+            <a href="{{ url_for('create_recipe') }}" class="btn">
+                Создать первый рецепт
+            </a>
+        </div>
     {% endif %}
 {% endblock %}

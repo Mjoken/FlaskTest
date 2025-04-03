@@ -6,7 +6,6 @@ from werkzeug.utils import secure_filename
 import os
 import uuid
 
-# Инициализация приложения
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key-123'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///recipes.db'
@@ -15,7 +14,6 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024  # 2MB
 
-# Инициализация расширений
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -27,7 +25,6 @@ def allowed_file(filename):
         filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
 
-# Модели базы данных
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
@@ -55,7 +52,6 @@ def inject_user():
     return dict(User=User)
 
 
-# Маршруты
 @app.route('/')
 def index():
     recipes = Recipe.query.order_by(Recipe.id.desc()).limit(3).all()
@@ -157,6 +153,7 @@ def create_recipe():
 
     return render_template('create_recipe.html')
 
+
 @app.route('/recipes')
 def recipes():
     all_recipes = Recipe.query.all()
@@ -166,7 +163,6 @@ def recipes():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-        # Создаем папку для загрузок если ее нет
         if not os.path.exists(app.config['UPLOAD_FOLDER']):
             os.makedirs(app.config['UPLOAD_FOLDER'])
     app.run(debug=True)
